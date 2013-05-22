@@ -40,16 +40,16 @@ Though not required to run the API client, I have included a simple but solid
 filesystem caching mechanism, writing the JSON response to local files, to save
 bandwidth and both, yours as well ArenaNet's resources. Please use caching
 (especially while developing). Read the phpdoc comments to learn about the
-cache's requirements
+cache's requirements.
 
 Disclaimer
 ----------
 I am a former Guild Wars 2 player, playing very rarely now. But I love the open
-web and especially open APIs. I just put together this simple libraries to help
-some other developers get into more serious API development. I am not sure
-whether I find the time to take this client to next levels, but I will keep you
-informed in this github project. Feel free to fork this library and make it
-your own. In fact, it's all ArenaNet's work and we can have fun thanks to them!
+web and especially open APIs. I just put together these simple libraries to help
+other developers get into more serious API development. I am not sure whether
+I'll find the time to take this project to next levels, but I will keep you
+informed here. Feel free to fork this library and make it your own. In fact,
+it's all ArenaNet's work and we can have fun thanks to them!
 
 **However, here's the official API terms of use:**
 These API's are wholly owned by ArenaNet, LLC ("ArenaNet"). Any use of the API's
