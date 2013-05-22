@@ -22,6 +22,11 @@ This should result in the following:
 
 Now, go and develop some more, **have fun!**
 
+Demo
+----
+I set up a small demo [on my own website](http://oliverschwarz.info/lab/gw2api/test.php),
+showing all events from Riverside [DE] with a cache update of 15 minutes.
+
 Troubleshooting
 ---------------
 There's not much troubleshooting at the moment. Your PHP installation will require
