@@ -8,5 +8,5 @@ Getting started
 ---------------
 1. Copy or extract the API client to your webserver directory.
 2. Copy ./config-dist.php to ./config.php and fill in the values
-3. Chmod the ./cache directory to 777
+3. Create a ./cache directory and chmod it to 777
 4. Open <yourlocalhost>/gw2api/test.php in your browser
