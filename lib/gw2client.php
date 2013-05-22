@@ -98,7 +98,7 @@ class Gw2ApiClient
         }
 
         // Try to fetch from cache
-        if (($json = $this->cache->get($resource, $lifetime)) !== false) {
+        if (($json = $this->cache->get($request_url, $lifetime)) !== false) {
             return json_decode($json);
         }
 
