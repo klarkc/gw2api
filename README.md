@@ -20,21 +20,22 @@ This should result in the following:
 1. 4 cache files (*.json) should reside in your cache folder
 2. The website in the browser should display all events in my homeworld (Riverside [DE]), their regional occurrence and their status
 
-Now, go and develop some more, have fun!
+Now, go and develop some more, **have fun!**
 
 Troubleshooting
 ---------------
 There's not much troubleshooting at the moment. Your PHP installation will require
-_allow_url_fopen_ set to _On_ and your _localhost_ should be able to request resources
+*allow_url_fopen* set to *On* and your *localhost* should be able to request resources
 from the internet. If you get cache write errors, you should check whether the
 read/write settings for the ./cache directory are correctly set to 777.
 
 Important note
 --------------
 Though not required to run the API client, I have included a simple but solid
-caching mechanism to save bandwidth and both, your as well ArenaNet's resource.
-Please use caching (especially while developing). Read the phpdoc comments to
-learn about the cache's requirements
+filesystem caching mechanism, writing the JSON response to local files, to save
+bandwidth and both, yours as well ArenaNet's resources. Please use caching
+(especially while developing). Read the phpdoc comments to learn about the
+cache's requirements
 
 Disclaimer
 ----------
@@ -45,9 +46,10 @@ whether I find the time to take this client to next levels, but I will keep you
 informed in this github project. Feel free to fork this library and make it
 your own. In fact, it's all ArenaNet's work and we can have fun thanks to them!
 
-*However, here's the official API terms of use:*
+**However, here's the official API terms of use:**
 These API's are wholly owned by ArenaNet, LLC ("ArenaNet"). Any use of the API's
-must comply with the Website Terms of Use and Content Terms of Use, however you
+must comply with the [Website Terms of Use](https://www.guildwars2.com/en/legal/website-terms-of-use/)
+and [Content Terms of Use](https://www.guildwars2.com/en/legal/guild-wars-2-content-terms-of-use/), however you
 may use the API's to make commercial products so long as they are otherwise
 compliant and do not compete with ArenaNet. ArenaNet may revoke your right to
 use the API's at any time. In addition, ArenaNet may create and/or amend any
