@@ -25,6 +25,7 @@ require 'config.php';
  */
 require BASEPATH . '/lib/gw2cache.php';
 require BASEPATH . '/lib/gw2client.php';
+require BASEPATH . '/lib/gw2utilities.php';
 
 /**
  * Instanciate client
@@ -35,11 +36,40 @@ $gw2api = new Gw2ApiClient(
     new Gw2ApiCache(BASEPATH . '/cache'));
 
 /**
- * Get all worlds (this is static, so cache it for a day)
+ * Get all worlds, maps and events (resources are fairly static, so cache it
+ * for a day)
  */
-$worlds = $gw2api->getResource('world_names', 86400);
+$worldlist = $gw2api->getResource('world_names', 86400);
+$eventlist = $gw2api->getResource('event_names', 86400);
+$maplist = $gw2api->getResource('map_names', 86400);
+
+/**
+ * Set world id
+ */
+$worldid = 2202;
+if (isset($_GET['world'])) {
+    $worldid = filter_input(INPUT_GET, 'world', FILTER_SANITIZE_NUMBER_INT);
+}
+
+/**
+ * Fetch events, cache for 15 minutes
+ */
+$events = $gw2api->getResource('events', 900, array('world_id' => $worldid));
+
+/**
+ * Generate output
+ */
+foreach ($events->events as $event)
+{
+    printf('%s - %s: %s (%s)<br>',
+        Gw2ApiUtil::getResourceById($event->world_id, $worldlist),
+        Gw2ApiUtil::getResourceById($event->map_id, $maplist),
+        Gw2ApiUtil::getResourceById($event->event_id, $eventlist),
+        $event->state);
+}
+
 
 /**
  * Show output
  */
-printf('<pre>%s</pre>', print_r($worlds, 1));
+printf('<pre>%s</pre>', print_r($events, 1));
