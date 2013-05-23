@@ -1,0 +1,51 @@
+#world-list li {
+  list-style-type: none;
+  float: left;
+  padding: 4px 8px;
+  font-size: 18pt;
+}
+
+#data {
+  clear: both;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 24pt;
+}
+
+#msg {
+  text-align: center;
+  font-size: 7pt;
+  font-weight: bold;
+}
+
+.dragon_events { margin: 0; padding: 0; overflow: hidden; }
+
+.dragon_events .inner_event .name, .dragon_events .inner_event .timer {
+  color: white;
+  font-size: 14pt;
+  font-weight: bold;
+  float: right;
+  clear: both;
+  width: 140px;
+  text-align: left;
+  margin-top: 4px;
+}
+
+.dragon_events .inner_event .timer{ margin: 0; font-size: 12pt;}
+.dragon_events .inner_event .timer .label{ float: left; font-size: 10pt; line-height: 18px; margin-right: 5px}
+
+.dragon_events .inactivated { background: url('../images/bg_inactivated.png') no-repeat; }
+.dragon_events .activated { background: url('../images//bg_activated.png') no-repeat; }
+.dragon_events .success { background: url('../images/bg_success.png') no-repeat; }
+.dragon_events .failed { background: url('../images/bg_failed.png') no-repeat; }
+.dragon_events .waiting { background: url('../images/bg_waiting.png') no-repeat; }
+
+.dragon_events .inner_event { width: 250px;height: 50px; }
+
+.dragon_events #drake_Jormag .inner_event {   background: url('../images/upperlayer_jor.png') no-repeat; }
+
+.dragon_events #drake_Shatterer .inner_event {   background: url('../images/upperlayer_shatter.png') no-repeat; }
+
+.dragon_events #drake_Tequatl_the_Sunless .inner_event {   background: url('../images/upperlayer_teq.png') no-repeat; }
+
+
