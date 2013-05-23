@@ -1,5 +1,7 @@
 <?php
 
+require BASEPATH . '/lib/gw2event.php';
+
 /**
  * Guild Wars 2 api client
  * 
@@ -51,7 +53,7 @@ class Gw2ApiClient
      * @var Gw2ApiCache
      */
     protected $cache;
-    
+        
     /**
      * Constructor
      * 
@@ -69,6 +71,7 @@ class Gw2ApiClient
         $this->endpoint = rtrim($endpoint, '/');
         $this->version = $version;
         $this->cache = $cache;
+
     }
 
     /**
@@ -82,6 +85,7 @@ class Gw2ApiClient
      * @param string  $resource Resource name to request from the api
      * @param integer $lifetime Allowed cache lifetime in seconds
      * @param array   $params   Optional parameters to append to the request URL [optional]
+     * @param string $field_id Optional string id to be stored with last_change property
      * 
      * @return stdClass Object from either API directly or from the cache
      */
@@ -104,9 +108,29 @@ class Gw2ApiClient
 
         // Fetch from remote api
         $res = file_get_contents($request_url);
+                
+        // Cache
         $this->cache->set($request_url, $res);
+        
         return json_decode($res);
         
+    }
+    
+    /**
+     * Store events from api
+     * 
+     * Use event_id for store the last change of all events from param.
+     * Return the same array with one more property, last_changed containing
+     * the last change DateTime.
+     * 
+     * @param array $events 
+     */
+    public function registerEvents($events) {
+        foreach($events->events as $key => $event) {
+            $retEvent = new gw2Event($event);
+            $events->events[$key]=$retEvent->registerEvent();
+        }
+        return $events;
     }
     
 }

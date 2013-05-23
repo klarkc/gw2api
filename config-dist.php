@@ -30,3 +30,43 @@ define('GW2API_ENDPOINT', '');
  * @var string
  */
 define('GW2API_VERSION', '');
+
+/**
+ * Mysql Hostname Configuration
+ * 
+ * Required for log changes from remote Guild Wars 2 api 
+ * @var string
+ */
+define('MYSQL_HOST', '');
+
+/**
+ * Mysql User Configuration
+ * 
+ * Required for log changes from remote Guild Wars 2 api 
+ * @var string
+ */
+define('MYSQL_USER', '');
+
+/**
+ * Mysql Password Configuration
+ * 
+ * Required for log changes from remote Guild Wars 2 api 
+ * @var string
+ */
+define('MYSQL_PASSWORD', '');
+
+/**
+ * Mysql Database Configuration
+ * 
+ * Required for log changes from remote Guild Wars 2 api 
+ * @var string
+ */
+define('MYSQL_DATABASE', '');
+
+/**
+ * Mysql Table Prefix Configuration
+ * 
+ * Required for log changes from remote Guild Wars 2 api 
+ * @var string
+ */
+define('MYSQL_PREFIX', '');
