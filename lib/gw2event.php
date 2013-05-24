@@ -32,6 +32,12 @@ class gw2Event {
         $this->db = new gw2Database(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE);
     }
 
+    /**
+     * Look or create a new event in database containing ids and last_modified
+     * datetime for use with spawn timers.
+     * @return \stdClass Returns an object containing the event and data
+     * updated from database
+     */
     public function registerEvent() {
         $this->db->connect();
         //FIXME: If table don't exists create one

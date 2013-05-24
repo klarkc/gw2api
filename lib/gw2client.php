@@ -120,8 +120,8 @@ class Gw2ApiClient
      * Store events from api
      * 
      * Use event_id for store the last change of all events from param.
-     * Return the same array with one more property, last_changed containing
-     * the last change DateTime.
+     * Return the same array with two more propertys, last_changed containing
+     * the last change DateTime and old_state containing the last known state.
      * 
      * @param array $events 
      */
