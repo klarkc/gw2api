@@ -126,10 +126,13 @@ class Gw2ApiClient
      * @param array $events 
      */
     public function registerEvents($events) {
-        foreach($events->events as $key => $event) {
+        $evts = $events->events;
+        foreach($evts as &$event) {
             $retEvent = new gw2Event($event);
-            $events->events[$key]=$retEvent->registerEvent();
+            $event=$retEvent->registerEvent();
         }
+        unset($event);
+        $events->events = $evts;
         return $events;
     }
     

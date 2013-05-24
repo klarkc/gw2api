@@ -46,31 +46,29 @@ $maplist = $gw2api->getResource('map_names', 86400);
 /**
  * Set world id
  */
-$worldid = 0;
+$worldid = null;
 if (isset($_GET['world'])) {
     $worldid = filter_input(INPUT_GET, 'world', FILTER_SANITIZE_NUMBER_INT);
 }
 
-/**
- * Fetch events, cache for 1 minute
- */
-$events = $gw2api->getResource('events', 60, array('world_id' => $worldid), true);
-$events = $gw2api->registerEvents($events);
+if ($worldid) {
+    /**
+     * Fetch events, cache for 1 minute
+     */
+    $events = $gw2api->getResource('events', 60, array('world_id' => $worldid), true);
+    $events = $gw2api->registerEvents($events);
 
-/**
- * Generate output
- */
+    /**
+     * Generate output
+     */
+    foreach ($events->events as $event) {
+        printf("Event ID: %s, Old State: %s, New State: %s, Last Modified: %s <br>", $event->event_id, $event->old_state, $event->state, $event->last_modified->format('H:i:s'));
+    }
 
-foreach ($events->events as $event) {
-    printf('%s - %s: %s (%s) remaining time: %s<br>',
-            Gw2ApiUtil::getResourceById($event->world_id, $worldlist),
-            Gw2ApiUtil::getResourceById($event->map_id, $maplist),
-            Gw2ApiUtil::getResourceById($event->event_id, $eventlist),
-            $event->state, $event->last_changed
-    );
-}
-
-/**
- * Show output
- */
+    /**
+     * Show output
+     */
 //printf('<pre>%s</pre>', print_r($events, 1));
+} else {
+    echo "Error: set the world param";
+}

@@ -24,6 +24,7 @@ class gw2Database {
     private $error;
     private $errno;
     private $query;
+    private $error_query;
 
     function __construct($host, $user, $pass, $name = "", $conn = 1) {
         $this->host = $host;
@@ -58,6 +59,7 @@ class gw2Database {
         if ($this->query = @mysql_query($sql)) {
             return $this->query;
         } else {
+            $this->error_query = $sql;
             $this->exception("Could not query database!");
             return false;
         }
@@ -134,6 +136,9 @@ class gw2Database {
                 </div>
                 <div>
                     Message: <?php echo $message; ?>
+                </div>
+                <div>
+                    Query: <?php echo $this->error_query; ?>
                 </div>
             <?php if (strlen($this->error) > 0): ?>
                     <div>
