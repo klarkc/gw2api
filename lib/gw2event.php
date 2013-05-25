@@ -1,6 +1,6 @@
 <?php
 
-require BASEPATH . '/lib/gw2database.php';
+require_once BASEPATH . '/lib/gw2database.php';
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.

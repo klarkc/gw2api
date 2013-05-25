@@ -1,6 +1,7 @@
 <?php
 
-require BASEPATH . '/lib/gw2event.php';
+require_once BASEPATH . '/lib/gw2event.php';
+require_once BASEPATH . '/lib/gw2spawn.php';
 
 /**
  * Guild Wars 2 api client
@@ -120,16 +121,33 @@ class Gw2ApiClient
      * Store events from api
      * 
      * Use event_id for store the last change of all events from param.
-     * Return the same array with two more propertys, last_changed containing
+     * Return the same array with two more properties, last_changed containing
      * the last change DateTime and old_state containing the last known state.
      * 
-     * @param array $events 
+     * @param stdClass $events all events from api
      */
     public function registerEvents($events) {
         $evts = $events->events;
         foreach($evts as &$event) {
             $retEvent = new gw2Event($event);
             $event=$retEvent->registerEvent();
+        }
+        unset($event);
+        $events->events = $evts;
+        return $events;
+    }
+    
+    /**
+     * Add properties spawn_timer and spawn_window for next state all events
+     * in the param
+     * @param stdClass $events events from api containing last_modified
+     * property
+     */
+    public function addSpawns($events) {
+        $evts = $events->events;
+        foreach($evts as &$event){
+            $retEvent = new gw2Spawn($event);
+            $event=$retEvent->getSpawn();
         }
         unset($event);
         $events->events = $evts;
