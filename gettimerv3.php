@@ -39,9 +39,9 @@ $gw2api = new Gw2ApiClient(
  * Get all worlds, maps and events (resources are fairly static, so cache it
  * for a day)
  */
-$worldlist = $gw2api->getResource('world_names', 86400);
-$eventlist = $gw2api->getResource('event_names', 86400);
-$maplist = $gw2api->getResource('map_names', 86400);
+//$worldlist = $gw2api->getResource('world_names', 86400);
+//$eventlist = $gw2api->getResource('event_names', 86400);
+//$maplist = $gw2api->getResource('map_names', 86400);
 
 /**
  * Set world id
@@ -51,17 +51,29 @@ if (isset($_GET['world'])) {
     $worldid = filter_input(INPUT_GET, 'world', FILTER_SANITIZE_NUMBER_INT);
 }
 
+/**
+ * Set world id
+ */
+$eventid = Array();
+if (isset($_GET['event'])) {
+    $eventid = explode(',', filter_input(INPUT_GET, 'event', FILTER_SANITIZE_STRING));
+}
+
 if ($worldid) {
     /**
      * Fetch events, cache for 1 minute
      */
-    $events = $gw2api->getResource('events', 60, array('world_id' => $worldid), true);
+    $params = Array();
+    if($worldid) $params['world_id'] = $worldid;
+    if($eventid) $params['event_id'] = $eventid;
+    $events = $gw2api->getResource('events', 60, $params);
     $events = $gw2api->registerEvents($events);
     $events = $gw2api->addSpawns($events);
 
     /**
      * Generate output
      */
+    
     foreach ($events->events as $event) {
             $remaining_timer = '';
             if ($event->remaining_spawn > -1) {

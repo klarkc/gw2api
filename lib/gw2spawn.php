@@ -58,27 +58,25 @@ class gw2Spawn {
             $this->spawn_window = new DateInterval('PT'.$spawn->spawn_window.'S');
             //Se próximo spawn for posterior ao momento atual
             $nextSpawnMoment = clone $this->event->last_modified;
-            $nextSpawnMoment = $nextSpawnMoment->add($this->spawn_timer);           
+            $nextSpawnMoment = $nextSpawnMoment->add($this->spawn_timer); 
             $now = new DateTime('now');
             if($nextSpawnMoment > $now){
                 //Se o tempo de spawn é maior que o momento atual
                 //setar como tempo de spawn
                 $this->remaining_spawn = $nextSpawnMoment->getTimestamp() - $now->getTimestamp();
+                //print_r($this->event); echo "<br>"; print_r($this->remaining_spawn); echo "<br>";
             } else {
                 // Se tempo de spawn é menor que momento atual
                 if ($spawn->spawn_window > 0) {
                     //Se tempo de spawn_window existir
                     $nextSpawnMoment->add($this->spawn_window);
                     $this->remaining_window = $nextSpawnMoment->getTimestamp() - $now->getTimestamp();
-                    if($this->remaining_window > $spawn->spawn_window){
+                    if($this->remaining_window < $spawn->spawn_window){
                         // Se tempo atual é maior que o tempo somado para
                         // o tempo de spawn_window, corrigir colocando -1 como
                         // situação desconhecida
                         $this->remaining_window = -1;
                          //TODO: Avisar que spawn window está errado
-                    } else {
-                        // Configura remaining_window com o tempo calculado
-                        $this->remaining_window = $seconds;
                     }
                 } else {
                     //Caso contrário setar -1

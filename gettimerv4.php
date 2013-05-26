@@ -39,9 +39,9 @@ $gw2api = new Gw2ApiClient(
  * Get all worlds, maps and events (resources are fairly static, so cache it
  * for a day)
  */
-$worldlist = $gw2api->getResource('world_names', 86400);
-$eventlist = $gw2api->getResource('event_names', 86400);
-$maplist = $gw2api->getResource('map_names', 86400);
+// $worldlist = $gw2api->getResource('world_names', 86400);
+// $eventlist = $gw2api->getResource('event_names', 86400);
+// $maplist = $gw2api->getResource('map_names', 86400);
 
 /**
  * Set world id
@@ -51,35 +51,25 @@ if (isset($_GET['world'])) {
     $worldid = filter_input(INPUT_GET, 'world', FILTER_SANITIZE_NUMBER_INT);
 }
 
+/**
+ * Set world id
+ */
+$eventid = null;
+if (isset($_GET['event'])) {
+    $eventid = explode(',', filter_input(INPUT_GET, 'event', FILTER_SANITIZE_STRING));
+}
+
 if ($worldid) {
     /**
      * Fetch events, cache for 1 minute
      */
-    $events = $gw2api->getResource('events', 60, array('world_id' => $worldid), true);
+    $params = Array();
+    if($worldid) $params['world_id'] = $worldid;
+    if($eventid) $params['event_id'] = $eventid;
+    $events = $gw2api->getResource('events', 60, $params, true);
     $events = $gw2api->registerEvents($events);
     $events = $gw2api->addSpawns($events);
-
-    /**
-     * Generate output
-     */
-    /*
-    foreach ($events->events as $event) {
-            $remaining_timer = '';
-            if ($event->remaining_spawn > -1) {
-                $remaining_timer = $event->remaining_spawn . 's';
-            } else if ($event->remaining_window > -1) {
-                $remaining_timer = $event->remaining_window . 's (window)';
-            } else {
-                $remaining_timer = 'unknown';
-            }
-            printf("Event ID: %s, Old State: %s, New State: %s, Last Modified: %s, Remaining time: %s <br> ", $event->event_id, $event->old_state, $event->state, $event->last_modified->format('H:i:s'), $remaining_timer
-            );
-    }
-     * */
-    /**
-     * Show output
-     */
-        echo json_encode($events);
+    echo json_encode($events);
 } else {
     echo "Error: set the world param";
 }

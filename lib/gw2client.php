@@ -25,8 +25,7 @@ require_once BASEPATH . '/lib/gw2spawn.php';
  * @package Core
  * @author  Oliver Schwarz <oliver.schwarz@gmail.com>
  */
-class Gw2ApiClient
-{
+class Gw2ApiClient {
 
     /**
      * Endpoint address
@@ -36,7 +35,7 @@ class Gw2ApiClient
      * @var string
      */
     protected $endpoint;
-    
+
     /**
      * Api version
      * 
@@ -54,7 +53,7 @@ class Gw2ApiClient
      * @var Gw2ApiCache
      */
     protected $cache;
-        
+
     /**
      * Constructor
      * 
@@ -67,12 +66,10 @@ class Gw2ApiClient
      * 
      * @return void
      */
-    public function __construct($endpoint, $version, Gw2ApiCache $cache)
-    {
+    public function __construct($endpoint, $version, Gw2ApiCache $cache) {
         $this->endpoint = rtrim($endpoint, '/');
         $this->version = $version;
         $this->cache = $cache;
-
     }
 
     /**
@@ -86,16 +83,11 @@ class Gw2ApiClient
      * @param string  $resource Resource name to request from the api
      * @param integer $lifetime Allowed cache lifetime in seconds
      * @param array   $params   Optional parameters to append to the request URL [optional]
-     * @param string $field_id Optional string id to be stored with last_change property
      * 
      * @return stdClass Object from either API directly or from the cache
      */
-    public function getResource($resource, $lifetime, $params = false)
-    {
-        $request_url = sprintf('%s/%s/%s.json',
-            $this->endpoint,
-            $this->version,
-            $resource);
+    public function getResource($resource, $lifetime, $params = false) {
+        $request_url = sprintf('%s/%s/%s.json', $this->endpoint, $this->version, $resource);
 
         // Append params
         if ($params !== false) {
@@ -103,20 +95,41 @@ class Gw2ApiClient
         }
 
         // Try to fetch from cache
-        if (($json = $this->cache->get($request_url, $lifetime)) !== false) {
-            return json_decode($json);
-        }
+        /* if (($json = $this->cache->get($request_url, $lifetime)) !== false) {
+          return json_decode($json);
+          } */
 
         // Fetch from remote api
         $res = file_get_contents($request_url);
-                
-        // Cache
-        $this->cache->set($request_url, $res);
-        
-        return json_decode($res);
-        
+
+        /*
+          // Cache
+          $this->cache->set($request_url, $res);
+         */
+
+        //FIXME: I can't use event_id and map_id in api, idk why.
+        //return json_decode($res);
+        $filter = function($value) use ($params) {
+                    $ret = true;
+                    foreach ($params as $pkey => $pvalue) {
+                        $fvalue = $pvalue;
+                        if ($pkey == 'event_id') {
+                            foreach ($pvalue as $event_id) {
+                                if ($value->event_id == $event_id)
+                                    $fvalue = $event_id;
+                            }
+                        }
+                        $ret = ($ret && ($value->$pkey == $fvalue));
+                    }
+                    return $ret;
+                };
+        $events = (array) json_decode($res);
+        $events = array_filter($events['events'], $filter);
+        $ret = new stdClass();
+        $ret->events = $events;
+        return $ret;
     }
-    
+
     /**
      * Store events from api
      * 
@@ -128,15 +141,15 @@ class Gw2ApiClient
      */
     public function registerEvents($events) {
         $evts = $events->events;
-        foreach($evts as &$event) {
+        foreach ($evts as &$event) {
             $retEvent = new gw2Event($event);
-            $event=$retEvent->registerEvent();
+            $event = $retEvent->registerEvent();
         }
         unset($event);
         $events->events = $evts;
         return $events;
     }
-    
+
     /**
      * Add properties spawn_timer and spawn_window for next state all events
      * in the param
@@ -145,13 +158,13 @@ class Gw2ApiClient
      */
     public function addSpawns($events) {
         $evts = $events->events;
-        foreach($evts as &$event){
+        foreach ($evts as &$event) {
             $retEvent = new gw2Spawn($event);
-            $event=$retEvent->getSpawn();
+            $event = $retEvent->getSpawn();
         }
         unset($event);
         $events->events = $evts;
         return $events;
     }
-    
+
 }
